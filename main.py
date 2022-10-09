@@ -3,6 +3,7 @@ import random
 import pickle
 
 
+
 def switch(x):
     match x:
         case "equip sword":
