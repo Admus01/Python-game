@@ -1,3 +1,4 @@
+from concurrent.futures import BrokenExecutor
 import sys
 import random
 import pickle
@@ -24,6 +25,9 @@ def switch(x):
             
         case "drop":    
             i = len(items)
+            if i == 0:
+                print("You already have all items")
+                return 0
             index = random.randint(0, i - 1)
             item = items[index]
             items.remove(item)
@@ -37,25 +41,22 @@ def switch(x):
 
 
 def save():
-    with open("game\items", "wb") as file:
+    with open("Python-game\items", "wb") as file:
         pickle.dump(items, file)
 
-    with open("game\player", "wb") as file:
+    with open("Python-game\player", "wb") as file:
         pickle.dump(player, file)
 
-    with open("game/firstRun", "w") as file:
+    with open("Python-game/firstRun", "w") as file:
         file.write("False")
 
-def load():
-    with open("game/firstRun", "r") as file:
-        firstRun = file.read
 
-    if firstRun == "False":
-        with open("game/items", "rb") as file:
-            items = pickle.load(file)
-        
-        with open("game/player", "rb") as file:
-            player = pickle.load(file)
+def load():    
+    with open("Python-game/items", "rb") as file:
+        items = pickle.load(file)
+    
+    with open("Python-game/player", "rb") as file:
+        player = pickle.load(file)
 
 class Player:
     hp: int 
@@ -127,7 +128,11 @@ items = []
 items.append(Sword)
 items.append(Shield)
 
-load()
+with open("Python-game/firstRun", "r") as file:
+        firstRun = file.read
+
+if firstRun == "False":
+    load()
 
 commnad = input()
 switch(commnad.lower())
