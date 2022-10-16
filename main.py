@@ -1,5 +1,3 @@
-from concurrent.futures import BrokenExecutor
-import sys
 import random
 import pickle
 
@@ -21,7 +19,7 @@ def switch(x):
         case "equip":
             print(player.inventory)
             print("You can equip", player.inventory, "\nand you have", player.equip, "equiped")
-            command = input("What item you want to equip?")
+            command = input("What item you want to equip? \n")
             
         case "drop":    
             i = len(items)
@@ -33,7 +31,7 @@ def switch(x):
             items.remove(item)
             player.inventory.append(item)
             print("You got", getattr(item, "name"))
-            print(player.inventory)
+
 
         case _:
             print("Wrong argument, try again")
@@ -41,22 +39,15 @@ def switch(x):
 
 
 def save():
-    with open("Python-game\items", "wb") as file:
+    with open("Python-game\items.pickle", "wb") as file:
         pickle.dump(items, file)
 
-    with open("Python-game\player", "wb") as file:
+    with open("Python-game\player.pickle", "wb") as file:
         pickle.dump(player, file)
 
     with open("Python-game/firstRun", "w") as file:
         file.write("False")
 
-
-def load():    
-    with open("Python-game/items", "rb") as file:
-        items = pickle.load(file)
-    
-    with open("Python-game/player", "rb") as file:
-        player = pickle.load(file)
 
 class Player:
     hp: int 
@@ -124,24 +115,27 @@ player.inventory = []
 player.dmg = 1
 
 
-items = []
-items.append(Sword)
-items.append(Shield)
-
 with open("Python-game/firstRun", "r") as file:
-        firstRun = file.read
+        firstRun = file.read()
 
-if firstRun == "False":
-    load()
+
+if firstRun == "False":  
+    with open("Python-game/items.pickle", "rb") as file:
+        items = pickle.load(file)
+
+    
+    with open("Python-game/player.pickle", "rb") as file:
+        player = pickle.load(file)
+else:
+    items = []
+    items.append(Sword)
+    items.append(Shield)
+
 
 commnad = input()
 switch(commnad.lower())
 
 
-if len(player.inventory) > 0:
-    player.inventory = sorted(player.inventory)
-
-if len(player.equip) > 0:
-    player.equip = sorted(player.equip)
-
 save()
+
+
