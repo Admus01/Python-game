@@ -17,15 +17,33 @@ def switch(x):
             player.equip.append(Shield)
 
         case "equip":
-            #print inv does print objetcs, not names
-            print(player.inventory)
-            print("You can equip", player.inventory, "\nand you have", player.equip, "equiped")
+            #do equip logic
+            inventory = ""
+            equip = ""
+            if len(player.inventory) == 0:
+                    inventory = "nothing"
+            else:
+                for item in player.inventory:
+                    inventory += getattr(item, "name")
+                    inventory += ", "
+
+            if len(player.equip) == 0:
+                    equip = "nothing"
+            else:
+                for item in player.equip:
+                    equip += getattr(item, "name")
+                    equip += ", "
+            
+            itemEquipped = False
+            print("You can equip", inventory, "\nand you have", equip, "equiped")
             command = input("What item you want to equip? \n")
             for item in player.inventory:
                 if getattr(item, "name").lower() == command.lower():
                     print(getattr(item, "name"), "equipped")
-                else:
-                    print("vyhul")
+                    itemEquipped = True
+
+            if not itemEquipped:
+                print("Item not found")
             
         case "drop":    
             i = len(items)
