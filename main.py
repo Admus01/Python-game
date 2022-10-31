@@ -17,9 +17,15 @@ def switch(x):
             player.equip.append(Shield)
 
         case "equip":
+            #print inv does print objetcs, not names
             print(player.inventory)
             print("You can equip", player.inventory, "\nand you have", player.equip, "equiped")
             command = input("What item you want to equip? \n")
+            for item in player.inventory:
+                if getattr(item, "name").lower() == command.lower():
+                    print(getattr(item, "name"), "equipped")
+                else:
+                    print("vyhul")
             
         case "drop":    
             i = len(items)
@@ -39,13 +45,13 @@ def switch(x):
 
 
 def save():
-    with open("Python-game\items.pickle", "wb") as file:
+    with open("items.pickle", "wb") as file:
         pickle.dump(items, file)
 
-    with open("Python-game\player.pickle", "wb") as file:
+    with open("player.pickle", "wb") as file:
         pickle.dump(player, file)
 
-    with open("Python-game/firstRun", "w") as file:
+    with open("firstRun", "w") as file:
         file.write("False")
 
 
@@ -115,16 +121,16 @@ player.inventory = []
 player.dmg = 1
 
 
-with open("Python-game/firstRun", "r") as file:
+with open("firstRun", "r") as file:
         firstRun = file.read()
 
 
 if firstRun == "False":  
-    with open("Python-game/items.pickle", "rb") as file:
+    with open("items.pickle", "rb") as file:
         items = pickle.load(file)
 
     
-    with open("Python-game/player.pickle", "rb") as file:
+    with open("player.pickle", "rb") as file:
         player = pickle.load(file)
 else:
     items = []
